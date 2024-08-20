@@ -1,5 +1,5 @@
 import '@/shared/styles/index.css';
-import { Button } from '@/shared/ui/Button/Button.tsx';
+import { Button } from '@/shared/ui';
 
 export const App = () => {
     return (
