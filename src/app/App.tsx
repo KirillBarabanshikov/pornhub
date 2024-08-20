@@ -1,10 +1,6 @@
 import '@/shared/styles/index.css';
-import { Button } from '@/shared/ui';
+import { MainPage } from '@/pages';
 
 export const App = () => {
-    return (
-        <div>
-            <Button>Подтвердить</Button>
-        </div>
-    );
+    return <MainPage />;
 };

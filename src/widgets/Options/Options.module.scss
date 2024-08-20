@@ -1,0 +1,13 @@
+.options {
+    display: flex;
+    gap: 40px;
+    max-height: 420px;
+    flex: 1 1 40%;
+    width: 100%;
+}
+
+.option {
+    background-color: rgba(43, 43, 43, 1);
+    border-radius: 50px;
+    flex: 1;
+}
