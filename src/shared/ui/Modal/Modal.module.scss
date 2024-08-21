@@ -1,0 +1,24 @@
+.overlay {
+    position: fixed;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: rgba(0, 0, 0, 0.3);
+    backdrop-filter: blur(10px);
+}
+
+.modal {
+    padding: 20px 40px;
+    background-color: rgba(43, 43, 43, 1);
+    border-radius: 50px;
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.25);
+
+    .title {
+        font-weight: 600;
+        font-size: 24px;
+        line-height: 29.26px;
+        text-align: center;
+        color: rgba(247, 151, 29, 1);
+    }
+}
