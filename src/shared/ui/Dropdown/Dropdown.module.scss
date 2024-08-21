@@ -12,6 +12,9 @@
 
     .dropdown {
         position: relative;
+        display: flex;
+        justify-content: center;
+        width: min-content;
 
         .dropdownButton {
             display: flex;
@@ -21,7 +24,6 @@
             background-color: var(--accent-orange);
             border-radius: 50px;
             padding: 10px 30px;
-            width: min-content;
 
             font-weight: 700;
 
@@ -39,7 +41,6 @@
             display: flex;
             flex-direction: column;
             gap: 10px;
-            width: min-content;
 
             background-color: rgba(43, 43, 43, 1);
             border-radius: 25px;
@@ -47,12 +48,19 @@
             box-shadow: 8px 0 20px rgba(30, 30, 30, 1);
 
             .dropdownListItem {
-                background-color: var(--accent-orange);
-                border-radius: 50px;
-                padding: 10px 30px;
+                width: 130px;
+                padding: 10px 0;
 
                 font-weight: 700;
+                color: rgba(157, 157, 157, 0.5);
+                text-align: center;
                 user-select: none;
+
+                &.selected {
+                    background-color: var(--accent-orange);
+                    border-radius: 50px;
+                    color: rgba(32, 32, 32, 1);
+                }
 
                 @media (hover: hover) {
                     &:hover {

@@ -1,4 +1,4 @@
-import { FC, useRef, useState } from 'react';
+import { FC, useState } from 'react';
 import clsx from 'clsx';
 import { AnimatePresence, motion } from 'framer-motion';
 import DropdownIcon from '@/shared/assets/icons/caret-down-fill.svg?react';
@@ -12,17 +12,16 @@ interface IDropdownProps {
 
 export const Dropdown: FC<IDropdownProps> = ({ label, className }) => {
     const [isOpen, setIsOpen] = useState(false);
-    const ref = useRef<HTMLDivElement>(null);
-    useOutsideClick(ref, () => setIsOpen(false));
+    const ref = useOutsideClick<HTMLDivElement>(() => setIsOpen(false));
 
     const toggleDropdown = () => {
         setIsOpen((prev) => !prev);
     };
 
     return (
-        <div className={clsx(styles.dropdownWrap, className)} ref={ref}>
+        <div className={clsx(styles.dropdownWrap, className)}>
             {label && <label>{label}</label>}
-            <div className={styles.dropdown}>
+            <div className={styles.dropdown} ref={ref}>
                 <div onClick={toggleDropdown} className={styles.dropdownButton}>
                     Слева
                     <DropdownIcon />
@@ -35,9 +34,9 @@ export const Dropdown: FC<IDropdownProps> = ({ label, className }) => {
                             exit={{ opacity: 0 }}
                             className={styles.dropdownList}
                         >
-                            <div className={styles.dropdownListItem}>Слева</div>
-                            <div className={styles.dropdownListItem}>Слева</div>
-                            <div className={styles.dropdownListItem}>Слева</div>
+                            <div className={clsx(styles.dropdownListItem, styles.selected)}>Слева</div>
+                            <div className={styles.dropdownListItem}>Снизу</div>
+                            <div className={styles.dropdownListItem}>По центру</div>
                         </motion.div>
                     )}
                 </AnimatePresence>
