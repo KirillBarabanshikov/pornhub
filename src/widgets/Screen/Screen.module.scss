@@ -1,7 +1,12 @@
 .screen {
-    width: 100%;
-    max-width: 960px;
-    max-height: 540px;
+    width: 960px;
+    height: 540px;
     background-color: rgba(0, 0, 0, 1);
-    flex: 1 1 60%;
+    position: relative;
+}
+.resource {
+    width: 100px;
+    height: 100px;
+    background-color: var(--accent-orange);
+    position: absolute;
 }
