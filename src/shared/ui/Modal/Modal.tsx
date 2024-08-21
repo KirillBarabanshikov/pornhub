@@ -22,7 +22,7 @@ export const Modal: FC<IModal> = ({ children, isOpen, onClose, title, className 
                     className={styles.overlay}
                     onClick={onClose}
                 >
-                    <div className={clsx(styles.modal, className)} onClick={(e) => e.stopPropagation()}>
+                    <div className={clsx(styles.modal, className)}>
                         {title && <h2 className={styles.title}>{title}</h2>}
                         {children}
                     </div>

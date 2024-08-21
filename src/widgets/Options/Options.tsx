@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { IconButton, Modal } from '@/shared/ui';
+import { Button, Dropdown, IconButton, Input, Modal } from '@/shared/ui';
 import PlusIcon from '@/shared/assets/icons/plus-lg.svg?react';
 import TrashIcon from '@/shared/assets/icons/trash-fill.svg?react';
 import styles from './Options.module.scss';
@@ -45,7 +45,11 @@ export const Options = () => {
                     </IconButton>
                 </div>
             </div>
-            <Modal isOpen={isOpen} onClose={() => setIsOpen(false)} title={'Редактирование скрипта'} />
+            <Modal isOpen={isOpen} onClose={() => setIsOpen(false)} title={'Редактирование скрипта'}>
+                <Input label={'Текст на вотермарке'} />
+                <Dropdown label={'Положение вотермарка'} />
+                <Button>Подтвердить</Button>
+            </Modal>
         </div>
     );
 };
