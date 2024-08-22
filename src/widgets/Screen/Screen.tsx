@@ -1,10 +1,15 @@
-import { useState } from 'react';
+import { FC, useState } from 'react';
 import { DraggableData, Rnd, RndResizeCallback, RndDragEvent } from 'react-rnd';
+import clsx from 'clsx';
 import styles from './Screen.module.scss';
 
-export const Screen = () => {
+interface IScreenProps {
+    className?: string;
+}
+
+export const Screen: FC<IScreenProps> = ({ className }) => {
     return (
-        <div className={styles.screen}>
+        <div className={clsx(styles.screen, className)}>
             {Array.from({ length: 3 }).map((_, index) => {
                 return <Resource key={index} />;
             })}

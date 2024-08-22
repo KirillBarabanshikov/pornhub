@@ -1,14 +1,19 @@
-import { useState } from 'react';
+import { FC, useState } from 'react';
+import clsx from 'clsx';
 import { Button, Dropdown, IconButton, Input, Modal } from '@/shared/ui';
 import PlusIcon from '@/shared/assets/icons/plus-lg.svg?react';
 import TrashIcon from '@/shared/assets/icons/trash-fill.svg?react';
 import styles from './Options.module.scss';
 
-export const Options = () => {
+interface IOptionsProps {
+    className?: string;
+}
+
+export const Options: FC<IOptionsProps> = ({ className }) => {
     const [isOpen, setIsOpen] = useState(false);
 
     return (
-        <div className={styles.options}>
+        <div className={clsx(styles.options, className)}>
             <div className={styles.option}>
                 <div className={styles.title}>Источник аудио</div>
                 <div className={styles.sources}></div>
