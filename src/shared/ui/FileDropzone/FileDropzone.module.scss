@@ -1,0 +1,33 @@
+.fileDropzone {
+    width: 100%;
+    height: 100%;
+    border: 2px dashed var(--accent-orange);
+    border-radius: 50px;
+    padding: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    @media (hover: hover) {
+        &:hover {
+            cursor: pointer;
+        }
+    }
+
+    .hint {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        color: rgba(249, 177, 86, 1);
+
+        .icon {
+            padding: 25px;
+        }
+
+        p {
+            font-weight: 500;
+            font-size: 20px;
+            line-height: 24.38px;
+        }
+    }
+}

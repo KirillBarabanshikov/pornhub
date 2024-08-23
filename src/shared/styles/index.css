@@ -42,16 +42,6 @@ button {
     background-color: unset;
 }
 
-h1,
-h2,
-h3,
-h4,
-h5,
-h6 {
-    font-family: 'Gilroy', sans-serif;
-    font-weight: 700;
-}
-
 ol,
 ul {
     list-style: none;
