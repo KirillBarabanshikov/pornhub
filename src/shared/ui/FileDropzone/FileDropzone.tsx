@@ -1,11 +1,15 @@
-import { useCallback } from 'react';
+import { FC, useCallback } from 'react';
 import { FileWithPath, useDropzone } from 'react-dropzone';
 import FileIcon from '@/shared/assets/icons/file.svg?react';
 import styles from './FileDropzone.module.scss';
 
-export const FileDropzone = () => {
-    const onDrop = useCallback((acceptedFiles: FileWithPath[]) => {
-        console.log(acceptedFiles);
+interface IFileDropzoneProps {
+    onChange: (files: FileWithPath[]) => void;
+}
+
+export const FileDropzone: FC<IFileDropzoneProps> = ({ onChange }) => {
+    const onDrop = useCallback((files: FileWithPath[]) => {
+        onChange(files);
     }, []);
 
     const { getRootProps, getInputProps } = useDropzone({ onDrop });

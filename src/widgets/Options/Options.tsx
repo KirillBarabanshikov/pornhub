@@ -6,6 +6,8 @@ import TrashIcon from '@/shared/assets/icons/trash-fill.svg?react';
 import CameraIcon from '@/shared/assets/icons/camera.svg?react';
 import styles from './Options.module.scss';
 import { Reorder } from 'framer-motion';
+import { useScriptMutation } from '@/entities/script/api';
+import { FileWithPath } from 'react-dropzone';
 
 interface IOptionsProps {
     className?: string;
@@ -13,6 +15,11 @@ interface IOptionsProps {
 
 export const Options: FC<IOptionsProps> = ({ className }) => {
     const [isOpen, setIsOpen] = useState(false);
+    const { mutate } = useScriptMutation();
+
+    const loadScript = (files: FileWithPath[]) => {
+        mutate({ scriptArchive: files[0], source: 'screen', action: 'load' });
+    };
 
     return (
         <div className={clsx(styles.options, className)}>
@@ -43,7 +50,7 @@ export const Options: FC<IOptionsProps> = ({ className }) => {
             <div className={styles.option}>
                 <div className={styles.title}>Python scripts</div>
                 <div className={styles.sources}>
-                    <FileDropzone />
+                    <FileDropzone onChange={(files) => loadScript(files)} />
                 </div>
                 <div className={styles.actions}>
                     <IconButton>
