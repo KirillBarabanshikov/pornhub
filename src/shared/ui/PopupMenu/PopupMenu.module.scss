@@ -1,0 +1,38 @@
+.popupMenuWrapper {
+    position: relative;
+
+    .trigger {
+    }
+
+    .popupMenu {
+        position: absolute;
+        bottom: 55px;
+        left: 0;
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+        background-color: var(--accent-orange);
+        padding: 10px 20px;
+        border-radius: 10px;
+
+        .popupMenuItem {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            height: 30px;
+
+            svg {
+                max-width: 15px;
+            }
+
+            p {
+                font-size: 14px;
+                white-space: nowrap;
+            }
+
+            @media (hover: hover) {
+                cursor: pointer;
+            }
+        }
+    }
+}

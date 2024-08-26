@@ -1,16 +1,16 @@
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import '@/shared/styles/index.css';
 import { MainPage } from '@/pages';
-import { WebsocketProvider } from './providers/WebsocketProvider.tsx';
+import { WebSocketProvider } from './providers/WebSocketProvider.tsx';
 
 const queryClient = new QueryClient();
 
 export const App = () => {
     return (
         <QueryClientProvider client={queryClient}>
-            <WebsocketProvider>
+            <WebSocketProvider>
                 <MainPage />
-            </WebsocketProvider>
+            </WebSocketProvider>
         </QueryClientProvider>
     );
 };

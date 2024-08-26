@@ -10,7 +10,8 @@
 .option {
     display: flex;
     flex-direction: column;
-    gap: 40px;
+    justify-content: space-between;
+    gap: 20px;
     flex: 1;
 
     background-color: rgba(43, 43, 43, 1);
@@ -26,12 +27,23 @@
     }
 
     .sources {
-        flex: 1;
         display: flex;
         flex-direction: column;
         gap: 20px;
-        overflow-y: auto;
-        padding-right: 20px;
+
+        &::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        &::-webkit-scrollbar-track {
+            border-radius: 6px;
+            background-color: rgba(32, 32, 32, 1);
+        }
+
+        &::-webkit-scrollbar-thumb {
+            background: var(--accent-orange);
+            border-radius: 6px;
+        }
     }
 
     .actions {
@@ -46,20 +58,6 @@
     gap: 20px;
     overflow: auto;
     flex: 1;
-
-    &::-webkit-scrollbar {
-        width: 6px;
-    }
-
-    &::-webkit-scrollbar-track {
-        border-radius: 6px;
-        background-color: rgba(32, 32, 32, 1);
-    }
-
-    &::-webkit-scrollbar-thumb {
-        background: var(--accent-orange);
-        border-radius: 6px;
-    }
 }
 
 .source {
@@ -69,7 +67,6 @@
     background-color: rgba(137, 137, 137, 1);
     padding: 10px 20px;
     border-radius: 55px;
-    cursor: grab;
 
     .icon {
         display: flex;
@@ -78,6 +75,7 @@
         width: 72px;
         height: 72px;
         background-color: rgba(32, 32, 32, 1);
+        color: rgba(137, 137, 137, 1);
         border-radius: 50px;
     }
 

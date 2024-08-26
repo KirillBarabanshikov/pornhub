@@ -1,5 +1,6 @@
 import axios from 'axios';
+import { API_URL } from '@/shared/consts';
 
 export const instance = axios.create({
-    baseURL: 'http://localhost',
+    baseURL: API_URL,
 });

@@ -3,10 +3,11 @@ import { instance } from '@/shared/api';
 import { IConfig } from '../model';
 
 const useConfigQuery = () => {
-    return useQuery<IConfig, Error, void>({
+    return useQuery<void, Error, IConfig>({
         queryKey: ['config'],
-        queryFn: () => {
-            return instance.get('/config');
+        queryFn: async () => {
+            const response = await instance.get('/config');
+            return response.data;
         },
         staleTime: Infinity,
     });

@@ -3,11 +3,11 @@ import clsx from 'clsx';
 import { Button, Dropdown, FileDropzone, IconButton, Input, Modal } from '@/shared/ui';
 import PlusIcon from '@/shared/assets/icons/plus-lg.svg?react';
 import TrashIcon from '@/shared/assets/icons/trash-fill.svg?react';
-import CameraIcon from '@/shared/assets/icons/camera.svg?react';
 import styles from './Options.module.scss';
-import { Reorder } from 'framer-motion';
 import { useScriptMutation } from '@/entities/script/api';
 import { FileWithPath } from 'react-dropzone';
+import { VideoSources } from '@/widgets/Options/ui';
+import { useConfigQuery } from '@/entities/config';
 
 interface IOptionsProps {
     className?: string;
@@ -16,6 +16,7 @@ interface IOptionsProps {
 export const Options: FC<IOptionsProps> = ({ className }) => {
     const [isOpen, setIsOpen] = useState(false);
     const { mutate } = useScriptMutation();
+    const { data: config } = useConfigQuery();
 
     const loadScript = (files: FileWithPath[]) => {
         mutate({ scriptArchive: files[0], source: 'screen', action: 'load' });
@@ -35,18 +36,7 @@ export const Options: FC<IOptionsProps> = ({ className }) => {
                     </IconButton>
                 </div>
             </div>
-            <div className={styles.option}>
-                <div className={styles.title}>Источник видео</div>
-                <SourcesList />
-                <div className={styles.actions}>
-                    <IconButton>
-                        <PlusIcon />
-                    </IconButton>
-                    <IconButton>
-                        <TrashIcon />
-                    </IconButton>
-                </div>
-            </div>
+            {config && <VideoSources config={config} />}
             <div className={styles.option}>
                 <div className={styles.title}>Python scripts</div>
                 <div className={styles.sources}>
@@ -67,28 +57,5 @@ export const Options: FC<IOptionsProps> = ({ className }) => {
                 <Button>Подтвердить</Button>
             </Modal>
         </div>
-    );
-};
-
-const initialItems = [1, 2, 3];
-
-const SourcesList = () => {
-    const [items, setItems] = useState(initialItems);
-
-    return (
-        <Reorder.Group axis='y' onReorder={setItems} values={items} layoutScroll className={styles.sourcesList}>
-            {items.map((item) => {
-                return (
-                    <Reorder.Item key={item} value={item} id={`${item}`} dragElastic={0}>
-                        <div className={styles.source}>
-                            <div className={styles.icon}>
-                                <CameraIcon />
-                            </div>
-                            <p>Захват веб-камеры</p>
-                        </div>
-                    </Reorder.Item>
-                );
-            })}
-        </Reorder.Group>
     );
 };
