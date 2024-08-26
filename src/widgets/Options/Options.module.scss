@@ -15,15 +15,8 @@
 
     background-color: rgba(43, 43, 43, 1);
     border-radius: 50px;
-    padding: 20px 20px 20px 40px;
+    padding: 20px 40px;
     box-shadow: 0 0 15px rgba(0, 0, 0, 0.25);
-
-    //TODO
-    ul {
-        display: flex;
-        flex-direction: column;
-        gap: 20px;
-    }
 
     .title {
         font-weight: 600;
@@ -39,47 +32,56 @@
         gap: 20px;
         overflow-y: auto;
         padding-right: 20px;
-
-        &::-webkit-scrollbar {
-            width: 6px;
-        }
-
-        &::-webkit-scrollbar-track {
-            border-radius: 6px;
-            background-color: rgba(32, 32, 32, 1);
-        }
-
-        &::-webkit-scrollbar-thumb {
-            background: var(--accent-orange);
-            border-radius: 6px;
-        }
-
-        .source {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            background-color: rgba(137, 137, 137, 1);
-            padding: 10px 20px;
-            border-radius: 55px;
-
-            .icon {
-                display: flex;
-                align-items: center;
-                justify-content: center;
-                width: 72px;
-                height: 72px;
-                background-color: rgba(32, 32, 32, 1);
-                border-radius: 50px;
-            }
-
-            p {
-                font-weight: 500;
-            }
-        }
     }
 
     .actions {
         display: flex;
         gap: 20px;
+    }
+}
+
+.sourcesList {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    overflow: auto;
+    flex: 1;
+
+    &::-webkit-scrollbar {
+        width: 6px;
+    }
+
+    &::-webkit-scrollbar-track {
+        border-radius: 6px;
+        background-color: rgba(32, 32, 32, 1);
+    }
+
+    &::-webkit-scrollbar-thumb {
+        background: var(--accent-orange);
+        border-radius: 6px;
+    }
+}
+
+.source {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    background-color: rgba(137, 137, 137, 1);
+    padding: 10px 20px;
+    border-radius: 55px;
+    cursor: grab;
+
+    .icon {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 72px;
+        height: 72px;
+        background-color: rgba(32, 32, 32, 1);
+        border-radius: 50px;
+    }
+
+    p {
+        font-weight: 500;
     }
 }

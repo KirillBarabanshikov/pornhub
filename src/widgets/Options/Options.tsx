@@ -11,11 +11,8 @@ interface IOptionsProps {
     className?: string;
 }
 
-const initialItems = [1, 2, 3];
-
 export const Options: FC<IOptionsProps> = ({ className }) => {
     const [isOpen, setIsOpen] = useState(false);
-    const [items, setItems] = useState(initialItems);
 
     return (
         <div className={clsx(styles.options, className)}>
@@ -33,22 +30,7 @@ export const Options: FC<IOptionsProps> = ({ className }) => {
             </div>
             <div className={styles.option}>
                 <div className={styles.title}>Источник видео</div>
-                <div className={styles.sources}>
-                    <Reorder.Group axis='y' onReorder={setItems} values={items} layoutScroll>
-                        {items.map((item) => {
-                            return (
-                                <Reorder.Item key={item} value={item} id={`${item}`}>
-                                    <div className={styles.source}>
-                                        <div className={styles.icon}>
-                                            <CameraIcon />
-                                        </div>
-                                        <p>Захват веб-камеры</p>
-                                    </div>
-                                </Reorder.Item>
-                            );
-                        })}
-                    </Reorder.Group>
-                </div>
+                <SourcesList />
                 <div className={styles.actions}>
                     <IconButton>
                         <PlusIcon />
@@ -78,5 +60,28 @@ export const Options: FC<IOptionsProps> = ({ className }) => {
                 <Button>Подтвердить</Button>
             </Modal>
         </div>
+    );
+};
+
+const initialItems = [1, 2, 3];
+
+const SourcesList = () => {
+    const [items, setItems] = useState(initialItems);
+
+    return (
+        <Reorder.Group axis='y' onReorder={setItems} values={items} layoutScroll className={styles.sourcesList}>
+            {items.map((item) => {
+                return (
+                    <Reorder.Item key={item} value={item} id={`${item}`} dragElastic={0}>
+                        <div className={styles.source}>
+                            <div className={styles.icon}>
+                                <CameraIcon />
+                            </div>
+                            <p>Захват веб-камеры</p>
+                        </div>
+                    </Reorder.Item>
+                );
+            })}
+        </Reorder.Group>
     );
 };
