@@ -16,7 +16,7 @@ interface IOptionsProps {
 export const Options: FC<IOptionsProps> = ({ className }) => {
     const [isOpen, setIsOpen] = useState(false);
     const { mutate } = useScriptMutation();
-    const { data: config } = useConfigQuery();
+    const { data } = useConfigQuery();
 
     const loadScript = (files: FileWithPath[]) => {
         mutate({ scriptArchive: files[0], source: 'screen', action: 'load' });
@@ -36,7 +36,7 @@ export const Options: FC<IOptionsProps> = ({ className }) => {
                     </IconButton>
                 </div>
             </div>
-            {config && <VideoSources config={config} />}
+            {data && <VideoSources data={data} />}
             <div className={styles.option}>
                 <div className={styles.title}>Python scripts</div>
                 <div className={styles.sources}>

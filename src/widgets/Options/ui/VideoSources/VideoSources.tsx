@@ -2,7 +2,7 @@ import { FC, Fragment, useRef, useState } from 'react';
 import { Reorder } from 'framer-motion';
 import { useQueryClient } from '@tanstack/react-query';
 import clsx from 'clsx';
-import { IConfig } from '@/entities/config';
+import { IConfigTransform } from '@/entities/config';
 import { IconButton, PopupMenu } from '@/shared/ui';
 import PlusIcon from '@/shared/assets/icons/plus-lg.svg?react';
 import TrashIcon from '@/shared/assets/icons/trash-fill.svg?react';
@@ -10,13 +10,13 @@ import { videoSourcesData, type TVideoSourceValue, IVideoSourcesData } from './d
 import optionsStyles from '../../Options.module.scss';
 
 interface IVideoSourcesProps {
-    config: IConfig;
+    data: IConfigTransform;
 }
 
-export const VideoSources: FC<IVideoSourcesProps> = ({ config }) => {
+export const VideoSources: FC<IVideoSourcesProps> = ({ data }) => {
     const sortedVideoSourcesData = videoSourcesData.sort((a, b) => {
-        const aIndex = config.video_sources[a.value]['z-index'];
-        const bIndex = config.video_sources[b.value]['z-index'];
+        const aIndex = data.config.video_sources[a.value]['z-index'];
+        const bIndex = data.config.video_sources[b.value]['z-index'];
 
         return aIndex - bIndex;
     });
@@ -27,20 +27,20 @@ export const VideoSources: FC<IVideoSourcesProps> = ({ config }) => {
     const constraintsRef = useRef(null);
     const queryClient = useQueryClient();
 
-    const filteredVideoSourcesData = videoSourcesData.filter((item) => !config.video_sources[item.value].show);
+    const filteredVideoSourcesData = videoSourcesData.filter((item) => !data.config.video_sources[item.value].show);
 
     const handleShowSource = (value: TVideoSourceValue) => {
-        const newConfig = config;
+        const newConfig = data.config;
         newConfig.video_sources[value].show = true;
-        queryClient.setQueryData(['config'], newConfig);
+        queryClient.setQueryData(['config'], { config: newConfig, updateAspects: [value], updateType: 'full' });
     };
 
     const handleHideSources = () => {
-        const newConfig = config;
+        const newConfig = data.config;
         focusedItems.forEach((item) => {
             newConfig.video_sources[item].show = false;
         });
-        queryClient.setQueryData(['config'], newConfig);
+        queryClient.setQueryData(['config'], { config: newConfig, updateAspects: focusedItems, updateType: 'full' });
         setFocusedItems([]);
     };
 
@@ -55,13 +55,17 @@ export const VideoSources: FC<IVideoSourcesProps> = ({ config }) => {
     };
 
     const handleReorder = (newOrder: IVideoSourcesData[]) => {
-        const newConfig = config;
+        const newConfig = data.config;
 
         newOrder.forEach((item, index) => {
             newConfig.video_sources[item.value]['z-index'] = index;
         });
 
-        queryClient.setQueryData(['config'], newConfig);
+        queryClient.setQueryData(['config'], {
+            config: newConfig,
+            updateAspects: ['screen', 'webcam'],
+            updateType: 'full',
+        });
     };
 
     return (
@@ -79,7 +83,7 @@ export const VideoSources: FC<IVideoSourcesProps> = ({ config }) => {
                 className={optionsStyles.sources}
             >
                 {items.map((item) => {
-                    const source = config.video_sources[item.value];
+                    const source = data.config.video_sources[item.value];
 
                     if (!source.show) {
                         return <Fragment key={item.value} />;

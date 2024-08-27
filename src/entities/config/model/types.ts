@@ -1,3 +1,9 @@
+export interface IConfigTransform {
+    config: IConfig;
+    updateAspects: string[];
+    updateType: string;
+}
+
 export interface IConfig {
     video_sources: {
         webcam: {

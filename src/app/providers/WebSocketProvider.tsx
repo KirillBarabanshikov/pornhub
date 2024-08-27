@@ -1,6 +1,7 @@
 import { FC, PropsWithChildren, useEffect, useState } from 'react';
 import { useQueryClient } from '@tanstack/react-query';
 import { WEBSOCKET_URL } from '@/shared/consts';
+import { IConfigTransform } from '@/entities/config/model';
 
 export const WebSocketProvider: FC<PropsWithChildren> = ({ children }) => {
     const [websocket, setWebsocket] = useState<WebSocket | null>(null);
@@ -36,15 +37,15 @@ export const WebSocketProvider: FC<PropsWithChildren> = ({ children }) => {
 
         const unsubscribe = queryClient.getQueryCache().subscribe((event) => {
             if (event.type === 'updated' && event.query.queryKey[0] === 'config') {
-                const newConfig = queryClient.getQueryData(['config']);
-                console.log('config updated:', newConfig);
+                const newConfig = queryClient.getQueryData<IConfigTransform>(['config']);
+                console.log('config updated:', newConfig.config);
 
                 if (websocket.readyState === websocket.OPEN) {
                     websocket.send(
                         JSON.stringify({
-                            update_type: 'full',
-                            update_aspects: ['webcam', 'screen'],
-                            config: newConfig,
+                            update_type: newConfig.updateType,
+                            update_aspects: newConfig.updateAspects,
+                            config: newConfig.config,
                         }),
                     );
                 }

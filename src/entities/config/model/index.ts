@@ -1,1 +1,1 @@
-export type { IConfig } from './types';
+export type { IConfigTransform, IConfig } from './types';
