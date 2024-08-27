@@ -3,8 +3,8 @@ import { useQueryClient } from '@tanstack/react-query';
 import { WEBSOCKET_URL } from '@/shared/consts';
 
 export const WebSocketProvider: FC<PropsWithChildren> = ({ children }) => {
-    const queryClient = useQueryClient();
     const [websocket, setWebsocket] = useState<WebSocket | null>(null);
+    const queryClient = useQueryClient();
 
     useEffect(() => {
         const ws = new WebSocket(`${WEBSOCKET_URL}/config`);
@@ -37,10 +37,16 @@ export const WebSocketProvider: FC<PropsWithChildren> = ({ children }) => {
         const unsubscribe = queryClient.getQueryCache().subscribe((event) => {
             if (event.type === 'updated' && event.query.queryKey[0] === 'config') {
                 const newConfig = queryClient.getQueryData(['config']);
-                console.log('Кэш config был обновлен:', newConfig);
+                console.log('config updated:', newConfig);
 
                 if (websocket.readyState === websocket.OPEN) {
-                    websocket.send(JSON.stringify(newConfig));
+                    websocket.send(
+                        JSON.stringify({
+                            update_type: 'full',
+                            update_aspects: ['webcam', 'screen'],
+                            config: newConfig,
+                        }),
+                    );
                 }
             }
         });

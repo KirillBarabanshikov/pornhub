@@ -1,31 +1,67 @@
 import { FC, Fragment, useRef, useState } from 'react';
+import { Reorder } from 'framer-motion';
+import { useQueryClient } from '@tanstack/react-query';
+import clsx from 'clsx';
 import { IConfig } from '@/entities/config';
 import { IconButton, PopupMenu } from '@/shared/ui';
 import PlusIcon from '@/shared/assets/icons/plus-lg.svg?react';
 import TrashIcon from '@/shared/assets/icons/trash-fill.svg?react';
 import { videoSourcesData, type TVideoSourceValue, IVideoSourcesData } from './data';
 import optionsStyles from '../../Options.module.scss';
-import { Reorder } from 'framer-motion';
-import { useQueryClient } from '@tanstack/react-query';
 
 interface IVideoSourcesProps {
     config: IConfig;
 }
 
 export const VideoSources: FC<IVideoSourcesProps> = ({ config }) => {
-    const [items, setItems] = useState(videoSourcesData);
+    const sortedVideoSourcesData = videoSourcesData.sort((a, b) => {
+        const aIndex = config.video_sources[a.value]['z-index'];
+        const bIndex = config.video_sources[b.value]['z-index'];
+
+        return aIndex - bIndex;
+    });
+
+    const [items, setItems] = useState(sortedVideoSourcesData);
+    const [focusedItems, setFocusedItems] = useState<TVideoSourceValue[]>([]);
+    const [isDragging, setIsDragging] = useState(false);
     const constraintsRef = useRef(null);
     const queryClient = useQueryClient();
 
-    const onSelect = (value: string) => {
-        const newConfig = { someField: 'New Value' };
-        queryClient.setQueryData(['config'], newConfig);
+    const filteredVideoSourcesData = videoSourcesData.filter((item) => !config.video_sources[item.value].show);
 
-        console.log(config.video_sources[value as TVideoSourceValue]);
+    const handleShowSource = (value: TVideoSourceValue) => {
+        const newConfig = config;
+        newConfig.video_sources[value].show = true;
+        queryClient.setQueryData(['config'], newConfig);
     };
 
-    const onReorder = (newOrder: IVideoSourcesData[]) => {
-        setItems(newOrder);
+    const handleHideSources = () => {
+        const newConfig = config;
+        focusedItems.forEach((item) => {
+            newConfig.video_sources[item].show = false;
+        });
+        queryClient.setQueryData(['config'], newConfig);
+        setFocusedItems([]);
+    };
+
+    const handleFocusSource = (value: TVideoSourceValue) => {
+        if (isDragging) return;
+
+        if (focusedItems.includes(value)) {
+            setFocusedItems(focusedItems.filter((item) => item !== value));
+        } else {
+            setFocusedItems([...focusedItems, value]);
+        }
+    };
+
+    const handleReorder = (newOrder: IVideoSourcesData[]) => {
+        const newConfig = config;
+
+        newOrder.forEach((item, index) => {
+            newConfig.video_sources[item.value]['z-index'] = index;
+        });
+
+        queryClient.setQueryData(['config'], newConfig);
     };
 
     return (
@@ -34,7 +70,10 @@ export const VideoSources: FC<IVideoSourcesProps> = ({ config }) => {
             <Reorder.Group
                 axis='y'
                 values={items}
-                onReorder={onReorder}
+                onReorder={(newOrder) => {
+                    setItems(newOrder);
+                    handleReorder(newOrder);
+                }}
                 layoutScroll
                 ref={constraintsRef}
                 className={optionsStyles.sources}
@@ -53,8 +92,16 @@ export const VideoSources: FC<IVideoSourcesProps> = ({ config }) => {
                             id={item.value}
                             dragElastic={0.05}
                             dragConstraints={constraintsRef}
+                            onDragStart={() => setIsDragging(true)}
+                            onDragEnd={() => setIsDragging(false)}
+                            onClick={() => handleFocusSource(item.value)}
                         >
-                            <div className={optionsStyles.source}>
+                            <div
+                                className={clsx(
+                                    optionsStyles.source,
+                                    focusedItems.includes(item.value) && optionsStyles.focused,
+                                )}
+                            >
                                 <div className={optionsStyles.icon}>{item.icon}</div>
                                 <p>{item.text}</p>
                             </div>
@@ -63,12 +110,15 @@ export const VideoSources: FC<IVideoSourcesProps> = ({ config }) => {
                 })}
             </Reorder.Group>
             <div className={optionsStyles.actions}>
-                <PopupMenu items={videoSourcesData} onSelect={onSelect}>
-                    <IconButton>
+                <PopupMenu
+                    items={filteredVideoSourcesData}
+                    onSelect={(value) => handleShowSource(value as TVideoSourceValue)}
+                >
+                    <IconButton disabled={!filteredVideoSourcesData.length}>
                         <PlusIcon />
                     </IconButton>
                 </PopupMenu>
-                <IconButton>
+                <IconButton onClick={handleHideSources} disabled={!focusedItems.length}>
                     <TrashIcon />
                 </IconButton>
             </div>

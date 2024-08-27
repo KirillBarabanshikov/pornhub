@@ -18,6 +18,11 @@ export const PopupMenu: FC<IPopupMenuProps> = ({ items, onSelect, children }) =>
     const [isOpen, setIsOpen] = useState(false);
     const ref = useOutsideClick<HTMLDivElement>(() => setIsOpen(false));
 
+    const handleToggle = () => {
+        if (!items.length) return;
+        setIsOpen((prev) => !prev);
+    };
+
     const handleSelect = (value: string) => {
         onSelect(value);
         setIsOpen(false);
@@ -25,7 +30,7 @@ export const PopupMenu: FC<IPopupMenuProps> = ({ items, onSelect, children }) =>
 
     return (
         <div ref={ref} className={styles.popupMenuWrapper}>
-            <div onClick={() => setIsOpen((prev) => !prev)} className={styles.trigger}>
+            <div onClick={handleToggle} className={styles.trigger}>
                 {children}
             </div>
             <AnimatePresence>

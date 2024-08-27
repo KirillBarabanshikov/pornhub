@@ -4,6 +4,15 @@
     border-radius: 10px;
     width: 44px;
     height: 44px;
+    transition: opacity 300ms ease-out;
+
+    &:disabled {
+        opacity: 0.5;
+
+        @media (hover: hover) {
+            cursor: initial;
+        }
+    }
 
     @media (hover: hover) {
         cursor: pointer;

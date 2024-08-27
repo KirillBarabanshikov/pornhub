@@ -67,6 +67,15 @@
     background-color: rgba(137, 137, 137, 1);
     padding: 10px 20px;
     border-radius: 55px;
+    transition: background-color 300ms ease-out;
+
+    &.focused {
+        background-color: var(--accent-orange);
+
+        .icon {
+            color: var(--accent-orange);
+        }
+    }
 
     .icon {
         display: flex;
@@ -77,9 +86,16 @@
         background-color: rgba(32, 32, 32, 1);
         color: rgba(137, 137, 137, 1);
         border-radius: 50px;
+        transition: color 300ms ease-out;
     }
 
     p {
         font-weight: 500;
+    }
+
+    @media (hover: hover) {
+        &:hover {
+            cursor: pointer;
+        }
     }
 }
