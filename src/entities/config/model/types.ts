@@ -8,7 +8,7 @@ export interface IConfig {
     video_sources: {
         webcam: {
             id: number;
-            external_scripts: never[];
+            external_scripts: IScript[];
             show: boolean;
             'z-index': number;
             position: {
@@ -27,7 +27,7 @@ export interface IConfig {
         };
         screen: {
             id: number;
-            external_scripts: never[];
+            external_scripts: IScript[];
             show: boolean;
             'z-index': number;
             position: {
@@ -49,7 +49,7 @@ export interface IConfig {
     audio_sources: {
         microphone: {
             id: number;
-            external_scripts: never[];
+            external_scripts: IScript[];
             show: boolean;
             rate: number;
             chunk: number;
@@ -61,7 +61,7 @@ export interface IConfig {
         };
         system_sound: {
             id: number;
-            external_scripts: never[];
+            external_scripts: IScript[];
             show: boolean;
             rate: number;
             chunk: number;
@@ -99,6 +99,19 @@ export interface IConfig {
     // };
 }
 
+export interface IScript {
+    name: string;
+    path: string;
+    enabled: boolean;
+    args: {
+        name: string;
+        title: string;
+        placeholder: string;
+        values: string[];
+        value: string;
+    }[];
+}
+
 export interface ISoundDevice {
     index: number;
     name: string;
@@ -107,4 +120,10 @@ export interface ISoundDevice {
     maxInputChannels: number;
     maxOutputChannels: number;
     hostApi: number;
+}
+
+export interface IScriptBody {
+    scriptArchive: File;
+    source: string;
+    action: 'load' | 'delete';
 }

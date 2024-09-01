@@ -1,14 +1,14 @@
+import { FC, Fragment, useState } from 'react';
+import { useQueryClient } from '@tanstack/react-query';
+import clsx from 'clsx';
 import { Dropdown, IconButton, PopupMenu } from '@/shared/ui';
+import { IConfigData } from '@/entities/config';
+import { useSoundDevicesQuery } from '@/entities/config/api';
 import PlusIcon from '@/shared/assets/icons/plus-lg.svg?react';
 import TrashIcon from '@/shared/assets/icons/trash-fill.svg?react';
-import { audioSourcesData, TAudioSourceValue } from './data.tsx';
-import { FC, Fragment, useState } from 'react';
-import clsx from 'clsx';
-import { IConfigData } from '@/entities/config';
-import { useQueryClient } from '@tanstack/react-query';
 import optionsStyles from '../../Options.module.scss';
+import { audioSourcesData, TAudioSourceValue } from './data.tsx';
 import styles from './AudioSources.module.scss';
-import { useSoundDevicesQuery } from '@/entities/config/api';
 
 interface IAudioSourcesProps {
     data: IConfigData;

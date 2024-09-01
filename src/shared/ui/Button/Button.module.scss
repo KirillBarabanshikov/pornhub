@@ -7,6 +7,19 @@
     font-size: 20px;
     line-height: 24.38px;
     color: rgba(32, 32, 32, 1);
+    transition: opacity 300ms ease-out;
+
+    &.fullWidth {
+        width: 100%;
+    }
+
+    &:disabled {
+        opacity: 0.5;
+
+        @media (hover: hover) {
+            cursor: initial;
+        }
+    }
 
     @media (hover: hover) {
         cursor: pointer;

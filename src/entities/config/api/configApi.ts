@@ -1,6 +1,6 @@
-import { useQuery } from '@tanstack/react-query';
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { instance } from '@/shared/api';
-import { IConfig, IConfigData, ISoundDevice } from '../model';
+import { IConfig, IConfigData, ISoundDevice, IScriptBody } from '../model';
 
 const useConfigQuery = () => {
     return useQuery<IConfigData, Error>({
@@ -24,4 +24,22 @@ const useSoundDevicesQuery = () => {
     });
 };
 
-export { useConfigQuery, useSoundDevicesQuery };
+const useScriptMutation = () => {
+    const queryClient = useQueryClient();
+
+    return useMutation<void, Error, IScriptBody>({
+        mutationFn: async (body) => {
+            const formData = new FormData();
+
+            formData.append('script_archive', body.scriptArchive);
+            formData.append('source', body.source);
+            formData.append('action', body.action);
+            formData.append('script_name', body.scriptArchive.name.split('.zip')[0]);
+
+            const response = await instance.post<{ config: IConfig }>('/script', formData);
+            queryClient.setQueryData(['config'], { config: response.data.config, updateAspects: [], updateType: '' });
+        },
+    });
+};
+
+export { useConfigQuery, useSoundDevicesQuery, useScriptMutation };

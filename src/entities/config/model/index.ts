@@ -1,1 +1,1 @@
-export type { IConfigData, IConfig, ISoundDevice } from './types';
+export type { IConfigData, IConfig, ISoundDevice, IScriptBody, IScript } from './types';

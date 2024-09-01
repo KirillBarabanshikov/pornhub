@@ -1,1 +1,1 @@
-export { useConfigQuery, useSoundDevicesQuery } from './configApi.ts';
+export { useConfigQuery, useSoundDevicesQuery, useScriptMutation } from './configApi.ts';
