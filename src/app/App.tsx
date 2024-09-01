@@ -1,7 +1,8 @@
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
-import '@/shared/styles/index.css';
 import { MainPage } from '@/pages';
 import { WebSocketProvider } from './providers/WebSocketProvider.tsx';
+
+import '@/shared/styles/index.css';
 
 const queryClient = new QueryClient();
 

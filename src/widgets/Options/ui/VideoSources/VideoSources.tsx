@@ -2,7 +2,7 @@ import { FC, Fragment, useRef, useState } from 'react';
 import { Reorder } from 'framer-motion';
 import { useQueryClient } from '@tanstack/react-query';
 import clsx from 'clsx';
-import { IConfigTransform } from '@/entities/config';
+import { IConfigData } from '@/entities/config';
 import { IconButton, PopupMenu } from '@/shared/ui';
 import PlusIcon from '@/shared/assets/icons/plus-lg.svg?react';
 import TrashIcon from '@/shared/assets/icons/trash-fill.svg?react';
@@ -10,7 +10,7 @@ import { videoSourcesData, type TVideoSourceValue, IVideoSourcesData } from './d
 import optionsStyles from '../../Options.module.scss';
 
 interface IVideoSourcesProps {
-    data: IConfigTransform;
+    data: IConfigData;
 }
 
 export const VideoSources: FC<IVideoSourcesProps> = ({ data }) => {

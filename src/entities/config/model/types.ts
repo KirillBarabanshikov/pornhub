@@ -1,4 +1,4 @@
-export interface IConfigTransform {
+export interface IConfigData {
     config: IConfig;
     updateAspects: string[];
     updateType: string;
@@ -46,6 +46,32 @@ export interface IConfig {
             focused: boolean;
         };
     };
+    audio_sources: {
+        microphone: {
+            id: number;
+            external_scripts: never[];
+            show: boolean;
+            rate: number;
+            chunk: number;
+            format: number;
+            channels: number;
+            device_input_index: number;
+            device_output_index: number;
+            focused: boolean;
+        };
+        system_sound: {
+            id: number;
+            external_scripts: never[];
+            show: boolean;
+            rate: number;
+            chunk: number;
+            format: number;
+            channels: number;
+            device_input_index: number;
+            device_output_index: number;
+            focused: boolean;
+        };
+    };
     // virtual_camera: {
     //     external_scripts: [];
     //     width: 1920;
@@ -71,30 +97,14 @@ export interface IConfig {
     //     rate: 44100;
     //     chunk: 1024;
     // };
-    // audio_sources: {
-    //     microphone: {
-    //         id: 1;
-    //         external_scripts: [];
-    //         show: false;
-    //         rate: 44100;
-    //         chunk: 1024;
-    //         format: 2;
-    //         channels: 1;
-    //         device_input_index: 1;
-    //         device_output_index: 4;
-    //         focused: false;
-    //     };
-    //     system_sound: {
-    //         id: 2;
-    //         external_scripts: [];
-    //         show: false;
-    //         rate: 48000;
-    //         chunk: 2048;
-    //         format: 3;
-    //         channels: 2;
-    //         device_input_index: -1;
-    //         device_output_index: 4;
-    //         focused: false;
-    //     };
-    // };
+}
+
+export interface ISoundDevice {
+    index: number;
+    name: string;
+    default: boolean;
+    deviceType: 'input' | 'output';
+    maxInputChannels: number;
+    maxOutputChannels: number;
+    hostApi: number;
 }

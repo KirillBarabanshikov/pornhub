@@ -1,6 +1,6 @@
+import { ReactNode } from 'react';
 import PCIcon from '@/shared/assets/icons/pc.svg?react';
 import CameraIcon from '@/shared/assets/icons/camera.svg?react';
-import { ReactNode } from 'react';
 
 export type TVideoSourceValue = 'screen' | 'webcam';
 

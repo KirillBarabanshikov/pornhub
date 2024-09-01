@@ -10,6 +10,47 @@
         color: rgba(157, 157, 157, 1);
     }
 
+    &.default {
+        .dropdownButton {
+            gap: 10px;
+            padding: 10px 30px;
+            font-weight: 700;
+        }
+
+        .dropdownList {
+            top: 50px;
+            gap: 10px;
+            padding: 10px;
+
+            .dropdownListItem {
+                padding: 10px 0;
+                font-weight: 700;
+            }
+        }
+    }
+
+    &.small {
+        .dropdownButton {
+            font-size: 14px;
+            padding: 4px;
+            gap: 4px;
+            height: 25px;
+        }
+
+        .dropdownList {
+            top: 30px;
+            gap: 5px;
+            padding: 5px;
+
+            .dropdownListItem {
+                height: 25px;
+                padding: 0 5px;
+                font-size: 14px;
+                max-width: 380px;
+            }
+        }
+    }
+
     .dropdown {
         position: relative;
         display: flex;
@@ -19,13 +60,20 @@
         .dropdownButton {
             display: flex;
             align-items: center;
-            gap: 10px;
-
             background-color: var(--accent-orange);
             border-radius: 50px;
-            padding: 10px 30px;
+            max-width: 150px;
 
-            font-weight: 700;
+            span {
+                white-space: nowrap;
+                overflow: hidden;
+                text-overflow: ellipsis;
+            }
+
+            svg {
+                min-width: 12px;
+                min-height: 12px;
+            }
 
             @media (hover: hover) {
                 &:hover {
@@ -36,34 +84,47 @@
 
         .dropdownList {
             position: absolute;
-            top: 50px;
+            z-index: 1;
 
             display: flex;
             flex-direction: column;
-            gap: 10px;
 
             background-color: rgba(43, 43, 43, 1);
             border-radius: 25px;
-            padding: 10px;
             box-shadow: 8px 0 20px rgba(30, 30, 30, 1);
 
             .dropdownListItem {
-                width: 130px;
-                padding: 10px 0;
+                display: flex;
+                align-items: center;
+                justify-content: center;
 
-                font-weight: 700;
                 color: rgba(157, 157, 157, 0.5);
-                text-align: center;
                 user-select: none;
+                white-space: nowrap;
+                border-radius: 50px;
+                transition: background-color 150ms linear;
+
+                span {
+                    text-align: center;
+                    width: 100%;
+                    overflow: hidden;
+                    text-overflow: ellipsis;
+                }
 
                 &.selected {
                     background-color: var(--accent-orange);
-                    border-radius: 50px;
                     color: rgba(32, 32, 32, 1);
+
+                    @media (hover: hover) {
+                        &:hover {
+                            background-color: var(--accent-orange);
+                        }
+                    }
                 }
 
                 @media (hover: hover) {
                     &:hover {
+                        background-color: rgba(247, 151, 29, 0.2);
                         cursor: pointer;
                     }
                 }

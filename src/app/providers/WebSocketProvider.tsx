@@ -1,7 +1,7 @@
 import { FC, PropsWithChildren, useEffect, useState } from 'react';
 import { useQueryClient } from '@tanstack/react-query';
 import { WEBSOCKET_URL } from '@/shared/consts';
-import { IConfigTransform } from '@/entities/config/model';
+import { IConfigData } from '@/entities/config';
 
 export const WebSocketProvider: FC<PropsWithChildren> = ({ children }) => {
     const [websocket, setWebsocket] = useState<WebSocket | null>(null);
@@ -37,7 +37,9 @@ export const WebSocketProvider: FC<PropsWithChildren> = ({ children }) => {
 
         const unsubscribe = queryClient.getQueryCache().subscribe((event) => {
             if (event.type === 'updated' && event.query.queryKey[0] === 'config') {
-                const newConfig = queryClient.getQueryData<IConfigTransform>(['config']);
+                const newConfig = queryClient.getQueryData<IConfigData>(['config']);
+                if (!newConfig) return;
+
                 console.log('config updated:', newConfig.config);
 
                 if (websocket.readyState === websocket.OPEN) {
