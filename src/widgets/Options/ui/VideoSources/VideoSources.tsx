@@ -8,6 +8,7 @@ import PlusIcon from '@/shared/assets/icons/plus-lg.svg?react';
 import TrashIcon from '@/shared/assets/icons/trash-fill.svg?react';
 import { videoSourcesData, type TVideoSourceValue, IVideoSourcesData } from './data';
 import optionsStyles from '../../Options.module.scss';
+import { useConfigStore } from '@/entities/config/model';
 
 interface IVideoSourcesProps {
     data: IConfigData;
@@ -26,13 +27,20 @@ export const VideoSources: FC<IVideoSourcesProps> = ({ data }) => {
     const [isDragging, setIsDragging] = useState(false);
     const constraintsRef = useRef(null);
     const queryClient = useQueryClient();
+    const setStream = useConfigStore((state) => state.setStream);
 
     const filteredVideoSourcesData = videoSourcesData.filter((item) => !data.config.video_sources[item.value].show);
 
-    const handleShowSource = (value: TVideoSourceValue) => {
-        const newConfig = data.config;
-        newConfig.video_sources[value].show = true;
-        queryClient.setQueryData(['config'], { config: newConfig, updateAspects: [value], updateType: 'full' });
+    const handleShowSource = async (value: TVideoSourceValue) => {
+        try {
+            const screenStream = await navigator.mediaDevices.getDisplayMedia();
+            setStream(screenStream);
+            const newConfig = data.config;
+            newConfig.video_sources[value].show = true;
+            queryClient.setQueryData(['config'], { config: newConfig, updateAspects: [value], updateType: 'full' });
+        } catch (error) {
+            console.error(error);
+        }
     };
 
     const handleHideSources = () => {

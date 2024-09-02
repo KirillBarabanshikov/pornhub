@@ -91,6 +91,7 @@ export const Scripts: FC<IScriptsProps> = ({ data }) => {
                     {scripts.map((script) => {
                         return (
                             <Script
+                                key={script.name}
                                 script={script}
                                 focusedItems={focusedItems}
                                 handleFocusScript={handleFocusScript}

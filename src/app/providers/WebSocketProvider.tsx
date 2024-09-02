@@ -38,7 +38,7 @@ export const WebSocketProvider: FC<PropsWithChildren> = ({ children }) => {
         const unsubscribe = queryClient.getQueryCache().subscribe((event) => {
             if (event.type === 'updated' && event.query.queryKey[0] === 'config') {
                 const newConfig = queryClient.getQueryData<IConfigData>(['config']);
-                if (!newConfig) return;
+                if (!newConfig || !newConfig.updateType || !newConfig.updateAspects.length) return;
 
                 console.log('config updated:', newConfig.config);
 

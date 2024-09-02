@@ -1,24 +1,36 @@
-import { FC, useState } from 'react';
+import { FC, PropsWithChildren, useState } from 'react';
 import { DraggableData, Rnd, RndResizeCallback, RndDragEvent } from 'react-rnd';
 import clsx from 'clsx';
 import styles from './Screen.module.scss';
+import { useConfigQuery } from '@/entities/config';
+import { ScreenCapture } from '@/widgets/Screen/ui/ScreenCapture';
 
 interface IScreenProps {
     className?: string;
 }
 
 export const Screen: FC<IScreenProps> = ({ className }) => {
+    const { data } = useConfigQuery();
+
+    if (!data) return <></>;
+
     return (
         <div className={clsx(styles.screen, className)}>
-            {Array.from({ length: 3 }).map((_, index) => {
-                return <Resource key={index} />;
-            })}
+            {data.config.video_sources.screen.show && (
+                <Resource>
+                    <ScreenCapture />
+                </Resource>
+            )}
+
+            {/*{Array.from({ length: 3 }).map((_, index) => {*/}
+            {/*    return <Resource key={index} />;*/}
+            {/*})}*/}
         </div>
     );
 };
 
-const Resource = () => {
-    const [[width, height], setSize] = useState([100, 100]);
+const Resource: FC<PropsWithChildren> = ({ children }) => {
+    const [[width, height], setSize] = useState([200, 100]);
     const [[x, y], setPosition] = useState([0, 0]);
 
     const handleResizeStop: RndResizeCallback = (e, direction, ref, delta, position) => {
@@ -40,6 +52,9 @@ const Resource = () => {
             onDragStop={handleDragStop}
             className={styles.resource}
             bounds={'parent'}
-        />
+            lockAspectRatio={true}
+        >
+            {children}
+        </Rnd>
     );
 };
