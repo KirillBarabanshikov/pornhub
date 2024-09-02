@@ -90,31 +90,12 @@ export const Scripts: FC<IScriptsProps> = ({ data }) => {
                 <div className={optionsStyles.sources}>
                     {scripts.map((script) => {
                         return (
-                            <div
-                                key={script.name}
-                                className={clsx(
-                                    styles.script,
-                                    script.enabled && styles.active,
-                                    focusedItems.find((item) => item.name === script.name) && styles.focused,
-                                )}
-                            >
-                                <motion.div animate={{ width: script.enabled ? '100%' : 'initial' }}>
-                                    <div className={styles.body} onClick={() => handleFocusScript(script)}>
-                                        <div className={styles.icon}>{script.icon}</div>
-                                        <div className={styles.content}>
-                                            <p className={styles.name}>{script.name}</p>
-                                            <span className={styles.title}>{script.title}</span>
-                                            <Button className={styles.button}>
-                                                <PencilIcon />
-                                                Изменить параметры
-                                            </Button>
-                                        </div>
-                                    </div>
-                                </motion.div>
-                                <div className={styles.action} onClick={() => handleEnableScript(script)}>
-                                    <p>{script.enabled ? 'Активирован' : 'Активировать'}</p>
-                                </div>
-                            </div>
+                            <Script
+                                script={script}
+                                focusedItems={focusedItems}
+                                handleFocusScript={handleFocusScript}
+                                handleEnableScript={handleEnableScript}
+                            />
                         );
                     })}
                 </div>
@@ -147,6 +128,43 @@ export const Scripts: FC<IScriptsProps> = ({ data }) => {
                 setShowChildSource={setShowChildSource}
                 setFiles={setFiles}
             />
+        </div>
+    );
+};
+
+interface IScriptProps {
+    script: TScript;
+    focusedItems: TScript[];
+    handleFocusScript: (script: TScript) => void;
+    handleEnableScript: (script: TScript) => void;
+}
+
+const Script: FC<IScriptProps> = ({ script, focusedItems, handleFocusScript, handleEnableScript }) => {
+    return (
+        <div
+            key={script.name}
+            className={clsx(
+                styles.script,
+                script.enabled && styles.active,
+                focusedItems.find((item) => item.name === script.name) && styles.focused,
+            )}
+        >
+            <motion.div animate={{ width: script.enabled ? '100%' : 'initial' }}>
+                <div className={styles.body} onClick={() => handleFocusScript(script)}>
+                    <div className={styles.icon}>{script.icon}</div>
+                    <div className={styles.content}>
+                        <p className={styles.name}>{script.name}</p>
+                        <span className={styles.title}>{script.title}</span>
+                        <Button className={styles.button}>
+                            <PencilIcon />
+                            Изменить параметры
+                        </Button>
+                    </div>
+                </div>
+            </motion.div>
+            <div className={styles.action} onClick={() => handleEnableScript(script)}>
+                <p>{script.enabled ? 'Активирован' : 'Активировать'}</p>
+            </div>
         </div>
     );
 };
