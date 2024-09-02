@@ -123,7 +123,8 @@ export interface ISoundDevice {
 }
 
 export interface IScriptBody {
-    scriptArchive: File;
+    scriptArchive?: File;
     source: string;
     action: 'load' | 'delete';
+    scriptName: string;
 }

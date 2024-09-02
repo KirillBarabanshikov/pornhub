@@ -31,10 +31,10 @@ const useScriptMutation = () => {
         mutationFn: async (body) => {
             const formData = new FormData();
 
-            formData.append('script_archive', body.scriptArchive);
+            if (body.scriptArchive) formData.append('script_archive', body.scriptArchive);
             formData.append('source', body.source);
             formData.append('action', body.action);
-            formData.append('script_name', body.scriptArchive.name.split('.zip')[0]);
+            formData.append('script_name', body.scriptName);
 
             const response = await instance.post<{ config: IConfig }>('/script', formData);
             queryClient.setQueryData(['config'], { config: response.data.config, updateAspects: [], updateType: '' });

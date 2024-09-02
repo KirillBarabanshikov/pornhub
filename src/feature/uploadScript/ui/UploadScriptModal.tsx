@@ -1,23 +1,36 @@
-import { FC, useState } from 'react';
+import { ChangeEvent, FC, useRef, useState } from 'react';
 import clsx from 'clsx';
 import { FileWithPath } from 'react-dropzone';
 import { Button, Modal } from '@/shared/ui';
+import { useScriptMutation } from '@/entities/config/api';
 import AudioIcon from '@/shared/assets/icons/audio.svg?react';
 import VideoIcon from '@/shared/assets/icons/camera.svg?react';
 import ScreenIcon from '@/shared/assets/icons/pc.svg?react';
 import styles from './UploadScriptModal.module.scss';
-import { useScriptMutation } from '@/entities/config/api';
 
 interface IUploadScriptModalProps {
     isOpen: boolean;
     setIsOpen: (isOpen: boolean) => void;
     files: FileWithPath[];
+    selectedSource: string;
+    setSelectedSource: (source: string) => void;
+    showChildSource: boolean;
+    setShowChildSource: (value: boolean) => void;
+    setFiles: (files: FileWithPath[]) => void;
 }
 
-export const UploadScriptModal: FC<IUploadScriptModalProps> = ({ isOpen, setIsOpen, files }) => {
-    const [selectedSource, setSelectedSource] = useState('');
+export const UploadScriptModal: FC<IUploadScriptModalProps> = ({
+    isOpen,
+    setIsOpen,
+    files,
+    selectedSource,
+    setSelectedSource,
+    showChildSource,
+    setShowChildSource,
+    setFiles,
+}) => {
     const [selectedChildSource, setSelectedChildSource] = useState('');
-    const [showChildSource, setShowChildSource] = useState(false);
+    const fileInputRef = useRef<HTMLInputElement>(null);
     const { mutateAsync: loadScript } = useScriptMutation();
 
     const handleClose = () => {
@@ -25,15 +38,31 @@ export const UploadScriptModal: FC<IUploadScriptModalProps> = ({ isOpen, setIsOp
         setSelectedSource('');
         setSelectedChildSource('');
         setShowChildSource(false);
+        setFiles([]);
     };
 
     const handleAccept = async () => {
         if (showChildSource) {
-            await loadScript({ scriptArchive: files[0], source: selectedChildSource, action: 'load' });
+            const scriptArchive = files[0];
+
+            if (!scriptArchive) {
+                return fileInputRef.current?.click();
+            }
+
+            const scriptName = scriptArchive.name.split('.zip')[0];
+            await loadScript({ scriptArchive, source: selectedChildSource, action: 'load', scriptName });
             return handleClose();
         }
 
         setShowChildSource(true);
+    };
+
+    const handleFileChange = async (event: ChangeEvent<HTMLInputElement>) => {
+        if (!event.target.files) return;
+        const scriptArchive = event.target.files[0];
+        const scriptName = scriptArchive.name.split('.zip')[0];
+        await loadScript({ scriptArchive, source: selectedChildSource, action: 'load', scriptName });
+        handleClose();
     };
 
     const disabled = !selectedSource || (showChildSource && !selectedChildSource);
@@ -43,10 +72,10 @@ export const UploadScriptModal: FC<IUploadScriptModalProps> = ({ isOpen, setIsOp
             <div className={styles.modalContent}>
                 {!showChildSource ? (
                     <div className={styles.sourcesList}>
-                        {sources.map((source, index) => {
+                        {sources.map((source) => {
                             return (
                                 <div
-                                    key={index}
+                                    key={source.value}
                                     onClick={() => setSelectedSource(source.value)}
                                     className={clsx(styles.source, selectedSource === source.value && styles.selected)}
                                 >
@@ -60,10 +89,10 @@ export const UploadScriptModal: FC<IUploadScriptModalProps> = ({ isOpen, setIsOp
                     <div className={styles.sourcesList}>
                         {sources
                             .find((source) => source.value === selectedSource)
-                            ?.children.map((source, index) => {
+                            ?.children.map((source) => {
                                 return (
                                     <div
-                                        key={index}
+                                        key={source.value}
                                         onClick={() => setSelectedChildSource(source.value)}
                                         className={clsx(
                                             styles.source,
@@ -75,6 +104,7 @@ export const UploadScriptModal: FC<IUploadScriptModalProps> = ({ isOpen, setIsOp
                                     </div>
                                 );
                             })}
+                        <input type='file' ref={fileInputRef} style={{ display: 'none' }} onChange={handleFileChange} />
                     </div>
                 )}
                 <Button fullWidth disabled={disabled} onClick={handleAccept}>

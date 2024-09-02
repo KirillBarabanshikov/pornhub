@@ -34,6 +34,24 @@
         }
     }
 
+    &.focused {
+        border-color: var(--accent-orange);
+
+        .body {
+            background-color: var(--accent-orange);
+
+            .icon {
+                color: var(--accent-orange);
+            }
+
+            .content {
+                .button {
+                    background-color: rgba(251, 203, 142, 1);
+                }
+            }
+        }
+    }
+
     .body {
         display: flex;
         align-items: center;
