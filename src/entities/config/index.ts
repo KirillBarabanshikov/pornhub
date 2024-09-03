@@ -1,2 +1,2 @@
 export { useConfigQuery } from './api';
-export type { IConfig, IConfigData, IScript } from './model';
+export { type IConfig, type IConfigData, type IScript, useConfigStore } from './model';

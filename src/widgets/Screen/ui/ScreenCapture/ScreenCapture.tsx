@@ -11,5 +11,12 @@ export const ScreenCapture: FC = () => {
         }
     }, [stream]);
 
-    return <video ref={videoRef} autoPlay playsInline style={{ width: '100%', pointerEvents: 'none' }} />;
+    return (
+        <video
+            ref={videoRef}
+            autoPlay
+            playsInline
+            style={{ width: '100%', height: '100%', objectFit: 'fill', pointerEvents: 'none' }}
+        />
+    );
 };

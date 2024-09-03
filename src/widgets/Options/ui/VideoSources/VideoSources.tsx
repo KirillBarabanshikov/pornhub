@@ -1,4 +1,4 @@
-import { FC, Fragment, useRef, useState } from 'react';
+import { FC, Fragment, useEffect, useRef, useState } from 'react';
 import { Reorder } from 'framer-motion';
 import { useQueryClient } from '@tanstack/react-query';
 import clsx from 'clsx';
@@ -27,14 +27,30 @@ export const VideoSources: FC<IVideoSourcesProps> = ({ data }) => {
     const [isDragging, setIsDragging] = useState(false);
     const constraintsRef = useRef(null);
     const queryClient = useQueryClient();
-    const setStream = useConfigStore((state) => state.setStream);
+    const { setScreenStream, clearScreenStream, screenStream } = useConfigStore((state) => state);
 
     const filteredVideoSourcesData = videoSourcesData.filter((item) => !data.config.video_sources[item.value].show);
 
-    const handleShowSource = async (value: TVideoSourceValue) => {
+    useEffect(() => {
+        if (data.config.video_sources.screen.show && !screenStream) {
+            startScreenStream();
+        }
+    }, [data]);
+
+    const startScreenStream = async () => {
         try {
             const screenStream = await navigator.mediaDevices.getDisplayMedia();
-            setStream(screenStream);
+            setScreenStream(screenStream);
+        } catch (error) {
+            throw error;
+        }
+    };
+
+    const handleShowSource = async (value: TVideoSourceValue) => {
+        try {
+            if (value === 'screen') {
+                await startScreenStream();
+            }
             const newConfig = data.config;
             newConfig.video_sources[value].show = true;
             queryClient.setQueryData(['config'], { config: newConfig, updateAspects: [value], updateType: 'full' });
@@ -46,6 +62,10 @@ export const VideoSources: FC<IVideoSourcesProps> = ({ data }) => {
     const handleHideSources = () => {
         const newConfig = data.config;
         focusedItems.forEach((item) => {
+            if (item === 'screen') {
+                clearScreenStream();
+            }
+
             newConfig.video_sources[item].show = false;
         });
         queryClient.setQueryData(['config'], { config: newConfig, updateAspects: focusedItems, updateType: 'full' });
